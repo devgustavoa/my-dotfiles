@@ -1,0 +1,42 @@
+[general]
+import = ["~/.config/alacritty/themes/monokai-dark.toml"]
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+size = 13
+
+[window]
+opacity = 1
+dynamic_title = true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
