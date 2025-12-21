@@ -1,6 +1,14 @@
 return {
   "folke/snacks.nvim",
   opts = {
+    explorer = {
+      enabled = false,
+    },
+
+    dashboard = {
+      enabled = false,
+    },
+
     picker = {
       hidden = true,
       ignored = true,
@@ -8,17 +16,6 @@ return {
         files = {
           hidden = true,
           ignored = true,
-        },
-        explorer = {
-          layout = {
-            preset = "sidebar",
-            preview = false,
-            layout = {
-              position = "right",
-            },
-          },
-          cycle = true,
-          auto_close = true,
         },
       },
     },

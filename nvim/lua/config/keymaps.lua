@@ -67,25 +67,24 @@ vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { noremap = true, sil
 -- Reload all buffers and refresh NvimTree
 vim.keymap.set("n", "<leader>rb", function()
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    local buftype = vim.bo[buf].buftype
-    local modified = vim.bo[buf].modified
-
-    -- Only reload normal buffers that are not modified
-    if buftype == "" and not modified then
+    if vim.bo[buf].buftype == "" and not vim.bo[buf].modified and vim.api.nvim_buf_get_name(buf) ~= "" then
       vim.api.nvim_buf_call(buf, function()
-        vim.cmd("e") -- reload from disk
+        vim.cmd("edit")
       end)
     end
   end
 
-  -- Refresh NvimTree if visible
-  local ok, nvim_tree_api = pcall(require, "nvim-tree.api")
-  if ok and nvim_tree_api.tree.is_visible() then
-    nvim_tree_api.tree.reload()
+  local ok, api = pcall(require, "nvim-tree.api")
+  if ok then
+    pcall(function()
+      if api.tree.is_visible() then
+        api.tree.reload()
+      end
+    end)
   end
 
   vim.notify("Reloaded buffers safely!", vim.log.levels.INFO)
-end, { noremap = true, silent = true, desc = "Reload buffers safely and refresh NvimTree" })
+end, { silent = true, desc = "Reload buffers safely and refresh NvimTree" })
 
 -- Restart Java Workspace
 vim.keymap.set("n", "<leader>rj", function()
@@ -161,10 +160,6 @@ end, map_opts)
 vim.keymap.set("n", "<leader>DB", function()
   dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
 end, map_opts)
--- Toggle DAP UI
-vim.keymap.set("n", "<leader>Dt", function()
-  dapui.toggle()
-end, map_opts)
 
 -- LSP
 vim.keymap.set("n", "<leader>gg", "<cmd>lua vim.lsp.buf.hover()<CR>")
@@ -174,10 +169,8 @@ vim.keymap.set("n", "<leader>gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
 vim.keymap.set("n", "<leader>gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>")
 vim.keymap.set("n", "<leader>gr", "<cmd>lua vim.lsp.buf.references()<CR>")
 vim.keymap.set("n", "<leader>gs", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
-vim.keymap.set("n", "<leader>rr", "<cmd>lua vim.lsp.buf.rename()<CR>")
 vim.keymap.set("n", "<leader>gf", "<cmd>lua vim.lsp.buf.format({async = true})<CR>")
 vim.keymap.set("v", "<leader>gf", "<cmd>lua vim.lsp.buf.format({async = true})<CR>")
-vim.keymap.set("n", "<leader>ga", "<cmd>lua vim.lsp.buf.code_action()<CR>")
 vim.keymap.set("n", "<leader>gl", "<cmd>lua vim.diagnostic.open_float()<CR>")
 vim.keymap.set("n", "<leader>gp", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
 vim.keymap.set("n", "<leader>gn", "<cmd>lua vim.diagnostic.goto_next()<CR>")
@@ -291,3 +284,18 @@ end, surround_opts)
 vim.keymap.set("v", "<leader>su'", function()
   surround_selection("'", "'")
 end, surround_opts)
+
+local function toggle_netrw()
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(bufnr) then
+      if vim.bo[bufnr].filetype == "netrw" then
+        vim.api.nvim_buf_delete(bufnr, { force = true })
+        return
+      end
+    end
+  end
+
+  vim.cmd("Explore")
+end
+
+vim.keymap.set("n", "<leader>e", toggle_netrw, { silent = true })
