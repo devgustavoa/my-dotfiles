@@ -77,3 +77,19 @@ end, { noremap = true, silent = true, desc = "Restart all LSP servers" })
 vim.keymap.set("n", "<leader>fp", function()
   require("telescope").extensions.projects.projects()
 end, { noremap = true, silent = true, desc = "Telescope: Projects" })
+
+-- Toggle explorer
+local function toggle_netrw()
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(bufnr) then
+      if vim.bo[bufnr].filetype == "netrw" then
+        vim.api.nvim_buf_delete(bufnr, { force = true })
+        return
+      end
+    end
+  end
+
+  vim.cmd("Explore")
+end
+
+vim.keymap.set("n", "<leader>e", toggle_netrw, { silent = true })
