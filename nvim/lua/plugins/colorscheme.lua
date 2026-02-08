@@ -1,14 +1,21 @@
 return {
-  "rose-pine/neovim",
-  name = "rose-pine",
-  config = function()
-    require("rose-pine").setup({
-      variant = "main",
-      styles = {
-        transparency = true,
+  {
+    "ficcdaf/ashen.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {
+      style = {
+        bold = false,
+        italic = false,
       },
-    })
-
-    vim.cmd.colorscheme("rose-pine")
-  end,
+      transparent = true,
+    },
+    config = function(_, opts)
+      require("ashen").setup(opts)
+      vim.cmd.colorscheme("ashen")
+    end,
+  },
+  {
+    "datsfilipe/vesper.nvim",
+  },
 }
