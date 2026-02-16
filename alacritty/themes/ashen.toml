@@ -3,8 +3,8 @@
 
 [colors.primary]
 foreground = "#dfdbdc"
-background = "#13111b"
-dim_foreground = "#695867"
+background = "#000000"
+dim_foreground = "#000000"
 bright_foreground = "#f4f3f3"
 
 [colors.cursor]
@@ -17,7 +17,7 @@ cursor = "#cac3c5"
 
 [colors.search.matches]
 foreground = "#dfdbdc"
-background = "#4e3e4a"
+background = "#000000"
 
 [colors.search.focused_match]
 foreground = "#13111b"
@@ -29,7 +29,7 @@ background = "#1f1d24"
 
 [colors.hints.end]
 foreground = "#7d6a6f"
-background = "#1f1d24"
+background = "#000000"
 
 [colors.line_indicator]
 foreground = "None"
@@ -41,7 +41,7 @@ background = "#1f1d24"
 
 [colors.selection]
 text = "#dfdbdc"
-background = "#363142"
+background = "#000000"
 
 [colors.normal]
 black = "#100e0e"
