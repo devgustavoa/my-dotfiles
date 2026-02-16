@@ -3,7 +3,7 @@ import = ["~/.config/alacritty/themes/ashen.toml"]
 
 [font]
 normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
-size = 14
+size = 16
 
 [window]
 opacity = 1
