@@ -1,7 +1,3 @@
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
-
 -- Better colors
 vim.opt.termguicolors = true
 
@@ -19,7 +15,11 @@ vim.opt.number = true
 vim.opt.numberwidth = 4
 
 -- Use real tabs
-vim.opt.expandtab = false
+vim.opt.expandtab = true
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.smartindent = true
 
 -- Split Windows
 vim.opt.splitright = true
@@ -30,18 +30,12 @@ vim.opt.scrolloff = 10
 
 -- Cursor Line
 vim.opt.cursorline = true
-vim.opt.guicursor = table.concat({
-  "n-v-c:block",
-  "i-ci:block-blinkwait175-blinkon150-blinkoff175",
-  "r-cr:hor20",
-  "o:hor50",
-  "sm:block-blinkwait175-blinkon150-blinkoff175",
-}, ",")
+vim.opt.guicursor = "a:block"
 
--- Folding
-vim.opt.foldlevel = 20
-vim.opt.foldmethod = "expr"
--- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- No unpredictable folding
+vim.opt.foldmethod = "manual"
+vim.opt.foldenable = true
+vim.opt.foldlevelstart = 99
 
 -- For Searching
 vim.opt.ignorecase = true
@@ -52,4 +46,17 @@ vim.opt.incsearch = true
 vim.opt.signcolumn = "yes"
 
 -- Faster updates for LSP, CursorHold, etc.
-vim.opt.updatetime = 300
+vim.opt.updatetime = 50
+
+-- No line wrapping
+vim.opt.wrap = false
+
+-- Color column for style guides
+vim.opt.colorcolumn = "80"
+
+-- Persistent undo
+vim.opt.undofile = true
+vim.opt.undodir = vim.fn.stdpath("data") .. "/undodir"
+
+-- Copy/paste between vim and system clipboard
+vim.opt.clipboard = "unnamedplus"
