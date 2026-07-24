@@ -225,7 +225,7 @@
   :demand t
   :config
   (setq keycast-mode-line-remove-tail-elements nil
-	keycast-mode-line-format "%K  %C%R ")
+	keycast-mode-line-format "%2s%K  %C%R ")
   (keycast-mode-line-mode 1))
 
 ;; C/C++

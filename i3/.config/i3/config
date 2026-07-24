@@ -3,6 +3,7 @@ exec_always --no-startup-id xset s 0 0
 exec_always --no-startup-id xset s noblank
 exec_always --no-startup-id xset -dpms
 exec --no-startup-id xrdb -merge ~/.Xresources
+exec --no-startup-id unclutter --timeout 2
 
 default_border normal 0
 default_floating_border normal 0
