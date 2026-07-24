@@ -205,7 +205,7 @@
     (setenv "PATH" (concat dir ":" (getenv "PATH")))))
 
 ;; Compilation (not project-wise like project.el does)
-(global-set-key (kbd "C-c k") #'compile)
+(global-set-key (kbd "C-x c") #'compile)
 
 ;; Colours instead of ANSI escapes on compilation
 (require 'ansi-color)
@@ -515,12 +515,9 @@
 (use-package go-mode)
 (use-package rust-mode)
 (use-package lua-mode)
-
-;; More relevant file types
 (use-package markdown-mode
   :config
   (setq markdown-fontify-code-blocks-natively t))
-
 (use-package yaml-mode)
 
 (add-to-list 'auto-mode-alist '("CODEOWNERS\\'" . conf-mode))
@@ -646,7 +643,7 @@
 
   ;; TODO states
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "PLANNING(p)" "IN-PROGRESS(i@/!)" "VERIFYING(v!)" "BLOCKED(b@)"  "|" "DONE(d!)" "OBE(o@!)" "WONT-DO(w@/!)" )))
+        '((sequence "TODO(t)" "PLANNING(p)" "IN-PROGRESS(i/!)" "VERIFYING(v!)" "BLOCKED(b@)"  "|" "DONE(d!)" "OBE(o@!)" "WONT-DO(w@/!)" )))
 
   ;; TODO colors
   (setq org-todo-keyword-faces
@@ -697,3 +694,8 @@
    . (lambda ()
        (display-line-numbers-mode -1)
        (hl-line-mode -1))))
+
+(use-package pdf-view-restore
+  :after pdf-tools
+  :hook
+  (pdf-view-mode . pdf-view-restore-mode))
