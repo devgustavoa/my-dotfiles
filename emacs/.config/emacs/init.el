@@ -105,40 +105,30 @@
 (global-set-key (kbd "C-,") #'duplicate-dwim)
 (global-set-key (kbd "M-z") 'zap-up-to-char)
 
-;; Minibuffer and Searching
-(use-package ido
-  :straight nil
-  :demand t
+;; Minibuffer
+(use-package vertico
+  :init
+  (vertico-mode)
   :config
-  (ido-mode 1)
-  (ido-everywhere 1))
+  (setq vertico-cycle t
+	vertico-count 15
+	vertico-resize nil
+	read-file-name-completion-ignore-case t
+	read-buffer-completion-ignore-case t
+	completion-ignore-case t))
 
-(use-package ido-completing-read+
-  :demand t
-  :config
-  (ido-ubiquitous-mode 1))
-
-(use-package smex
-  :bind
-  (("M-x" . smex)
-   ("C-c C-c M-x" . execute-extended-command)))
-
-(use-package helm
-  :bind
-  (("C-c h t" . helm-cmd-t)
-   ("C-c h f" . helm-find)
-   ("C-c h a" . helm-org-agenda-files-headings)
-   ("C-c h r" . helm-recentf))
+(use-package orderless
   :custom
-  (helm-ff-transformer-show-only-basename nil))
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion)))))
 
-(use-package helm-git-grep
-  :bind
-  ("C-c h g g" . helm-git-grep))
-
-(use-package helm-ls-git
-  :bind
-  ("C-c h g l" . helm-ls-git-ls))
+(use-package marginalia
+  :bind (:map minibuffer-local-map
+	      ("M-A" . marginalia-cycle))
+  :init
+  (marginalia-mode)
+  :custom
+  (marginalia-align 'right))
 
 ;; (Better) Unique buffer naming
 (setq uniquify-buffer-name-style 'forward)
@@ -229,143 +219,15 @@
   (keycast-mode-line-mode 1))
 
 ;; C/C++
-(defun astyle-buffer (&optional justify)
-  (interactive)
-  (let ((saved-line-number (line-number-at-pos)))
-    (shell-command-on-region
-     (point-min)
-     (point-max)
-     "astyle --style=kr"
-     nil
-     t)
-    (goto-line saved-line-number)))
-
-(defun gnix/simpc--line-starts-with-closing-delimiter-p ()
-  "Return non-nil when the current line starts with a closing delimiter."
-  (save-excursion
-    (back-to-indentation)
-    (memq (char-after) '(?\) ?\] ?}))))
-
-(defun gnix/simpc--control-paren-p (open-paren)
-  "Return non-nil when OPEN-PAREN belongs to a control statement."
-  (save-excursion
-    (goto-char open-paren)
-    (string-match-p
-     "\\_<\\(?:if\\|for\\|switch\\|while\\)\\_>\\s-*\\'"
-     (buffer-substring-no-properties (line-beginning-position) (point)))))
-
-(defun gnix/simpc--control-before-brace-indentation (open-brace)
-  "Return the control statement's indentation before OPEN-BRACE, if any."
-  (save-excursion
-    (goto-char open-brace)
-    (skip-chars-backward " \t\n")
-    (when (eq (char-before) ?\))
-      (let ((open-paren (ignore-errors (scan-sexps (point) -1))))
-        (when (and open-paren (gnix/simpc--control-paren-p open-paren))
-          (goto-char open-paren)
-          (current-indentation))))))
-
-(defun gnix/simpc--macro-body-indentation ()
-  "Return indentation for the first line of a continued macro body."
-  (save-excursion
-    (beginning-of-line)
-    (when (> (line-number-at-pos) 1)
-      (forward-line -1)
-      (when (save-excursion
-              (end-of-line)
-              (skip-chars-backward " \t")
-              (eq (char-before) ?\\))
-        (back-to-indentation)
-        (when (looking-at-p "#\\s-*define\\_>")
-          (+ (current-indentation) 4))))))
-
-(defun gnix/simpc--after-top-level-close-indentation ()
-  "Return indentation after a top-level closing brace, if applicable."
-  (let ((previous (simpc--previous-non-empty-line)))
-    (when (and previous
-               (string-prefix-p "}" (string-trim-left (car previous))))
-      (max (- (cdr previous) 4) 0))))
-
-(defun gnix/simpc--delimiter-indentation (open-delimiter)
-  "Return AStyle-like indentation relative to OPEN-DELIMITER."
-  (let ((closing-delimiter
-         (gnix/simpc--line-starts-with-closing-delimiter-p)))
-    (save-excursion
-      (goto-char open-delimiter)
-      (let ((open-column (current-column))
-            (open-indent (current-indentation))
-            (control-indent
-             (and (eq (char-after) ?{)
-                  (gnix/simpc--control-before-brace-indentation
-                   open-delimiter))))
-        (cond
-         (closing-delimiter (or control-indent open-indent))
-         ((eq (char-after) ?\()
-          (if (gnix/simpc--control-paren-p open-delimiter)
-              (+ open-indent 8)
-            (1+ open-column)))
-         ((eq (char-after) ?{)
-          (+ (or control-indent open-indent)
-             4)))))))
-
-(defun gnix/simpc-indent-line ()
-  "Indent a Simple C line, including expressions continued across lines."
-  (interactive)
-  (let* ((offset-from-indentation
-          (max (- (current-column) (current-indentation)) 0))
-         (open-delimiter
-          (save-excursion
-            (back-to-indentation)
-            (nth 1 (syntax-ppss))))
-         (after-label
-          (let ((previous (simpc--previous-non-empty-line)))
-            (and previous
-                 (string-suffix-p
-                  ":"
-                  (string-trim-right (car previous))))))
-         (desired-indentation
-          (cond
-           ((and open-delimiter (not after-label))
-            (gnix/simpc--delimiter-indentation open-delimiter))
-           ((gnix/simpc--macro-body-indentation))
-           ((gnix/simpc--after-top-level-close-indentation))
-           (t (simpc--desired-indentation)))))
-    (indent-line-to desired-indentation)
-    (forward-char offset-from-indentation)))
-
-(defun gnix/simpc-electric-closing-delimiter ()
-  "Insert a closing delimiter and reindent it when it starts the line."
-  (interactive)
-  (let ((starts-line
-         (string-match-p
-          "\\`[ \t]*\\'"
-          (buffer-substring-no-properties
-           (line-beginning-position)
-           (point)))))
-    (call-interactively #'self-insert-command)
-    (when starts-line
-      (indent-according-to-mode))))
-
-(defun gnix/simpc-mode-setup ()
-  (setq-local eglot-ignored-server-capabilities
+(defun gnix/c-ts-mode-setup ()
+  (setq-local c-ts-mode-indent-style 'k&r
+              c-ts-mode-indent-offset 4
+              indent-tabs-mode nil
+              eglot-ignored-server-capabilities
               '(:documentOnTypeFormattingProvider))
-  (setq-local indent-tabs-mode nil)
-  (setq-local indent-line-function #'gnix/simpc-indent-line)
-  (setq-local fill-paragraph-function 'astyle-buffer)
-  (local-set-key (kbd "RET") #'newline-and-indent)
-  (local-set-key (kbd "<return>") #'newline-and-indent)
-  (local-set-key (kbd "C-m") #'newline-and-indent)
-  (local-set-key (kbd ")") #'gnix/simpc-electric-closing-delimiter)
-  (local-set-key (kbd "]") #'gnix/simpc-electric-closing-delimiter)
-  (local-set-key (kbd "}") #'gnix/simpc-electric-closing-delimiter)
-  (local-set-key (kbd "M-q") #'astyle-buffer))
+  (local-set-key (kbd "RET") #'newline-and-indent))
 
-(use-package simpc-mode
-  :straight (:type git
-             :host github
-             :repo "rexim/simpc-mode")
-  :mode ("\\.\\(?:c\\(?:c\\|pp\\|xx\\)?\\|h\\(?:h\\|pp\\|xx\\)?\\)\\'" . simpc-mode)
-  :hook (simpc-mode . gnix/simpc-mode-setup))
+(add-hook 'c-ts-base-mode-hook #'gnix/c-ts-mode-setup)
 
 ;; Languages
 (use-package treesit
@@ -374,6 +236,8 @@
   :init
   (setq treesit-language-source-alist
         '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
+          (c . ("https://github.com/tree-sitter/tree-sitter-c"))
+          (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
           (elixir . ("https://github.com/elixir-lang/tree-sitter-elixir"))
           (go . ("https://github.com/tree-sitter/tree-sitter-go"))
           (gomod . ("https://github.com/camdencheek/tree-sitter-go-mod"))
@@ -386,6 +250,8 @@
           (yaml . ("https://github.com/tree-sitter-grammars/tree-sitter-yaml"))))
 
   (dolist (entry '((bash sh-mode bash-ts-mode)
+                   (c c-mode c-ts-mode)
+                   (cpp c++-mode c++-ts-mode)
                    (elixir elixir-mode elixir-ts-mode)
                    (go go-mode go-ts-mode)
                    (gomod go-dot-mod-mode go-mod-ts-mode)
@@ -403,93 +269,17 @@
     (add-to-list 'auto-mode-alist
                  '("\\.[hl]?eex\\'" . heex-ts-mode))))
 
-(defun gnix/ts-indent-offset ()
-  "Return the indentation offset for the current C-like tree-sitter mode."
-  (if (derived-mode-p 'java-ts-mode)
-      java-ts-mode-indent-offset
-    c-ts-mode-indent-offset))
-
-(defun gnix/ts-newline-and-indent ()
-  "Insert a newline and keep C-like scope indentation predictable."
-  (interactive)
-  (let* ((blank-line
-          (save-excursion
-            (beginning-of-line)
-            (looking-at-p "[ \t]*$")))
-         (indent (current-indentation))
-         (control-line
-          (save-excursion
-            (back-to-indentation)
-            (looking-at-p
-             "\\(?:if\\|else\\|for\\|while\\|do\\|switch\\)\\b")))
-         (opens-block
-          (save-excursion
-            (end-of-line)
-            (skip-chars-backward " \t")
-            (eq (char-before) ?{))))
-    (when blank-line
-      (delete-region (line-beginning-position) (line-end-position)))
-    (newline)
-    (if (or opens-block control-line)
-        (indent-to (+ indent (gnix/ts-indent-offset)))
-      (indent-according-to-mode)
-
-      ;; Java's parser can temporarily lose the surrounding scope while
-      ;; braces are incomplete. Keep the indentation stable in that case.
-      (when (and (derived-mode-p 'java-ts-mode)
-                 (> indent 0)
-                 (= (current-indentation) 0))
-        (indent-to indent)))))
-
-(defun gnix/ts-electric-brace ()
-  "Insert a brace, then reindent only that brace line."
-  (interactive)
-  (call-interactively #'self-insert-command)
-  (save-excursion
-    (beginning-of-line)
-    (when (looking-at-p "[ \t]*[{}]")
-      (let ((control-indent
-             (and (derived-mode-p 'c-ts-base-mode)
-                  (eq (char-after
-                       (progn
-                         (back-to-indentation)
-                         (point)))
-                      ?{)
-                  (save-excursion
-                    (forward-line -1)
-                    (back-to-indentation)
-                    (when (looking-at-p
-                           "\\(?:if\\|else\\|for\\|while\\|do\\|switch\\)\\b")
-                      (current-indentation))))))
-        (if control-indent
-            (indent-line-to control-indent)
-          (indent-according-to-mode))))))
-
-(defun gnix/c-like-ts-mode-setup ()
-  (electric-indent-local-mode -1)
-
-  (if (derived-mode-p 'java-ts-mode)
-      (setq-local java-ts-mode-indent-offset 4)
-    (setq-local c-ts-mode-indent-offset 4))
-
-  (setq-local indent-tabs-mode nil)
-
-  (local-set-key (kbd "RET") #'gnix/ts-newline-and-indent)
-  (local-set-key (kbd "<return>") #'gnix/ts-newline-and-indent)
-  (local-set-key (kbd "C-m") #'gnix/ts-newline-and-indent)
-  (local-set-key (kbd "{") #'gnix/ts-electric-brace)
-  (local-set-key (kbd "}") #'gnix/ts-electric-brace))
-
-(add-hook 'java-ts-mode-hook #'gnix/c-like-ts-mode-setup)
-
 ;; Language Server Protocol
 (use-package eglot
   :custom
   (flymake-show-diagnostics-at-end-of-line nil)
   :hook
-  ((java-mode . eglot-ensure)
+  ((c-mode . eglot-ensure)
+   (c-ts-mode . eglot-ensure)
+   (c++-mode . eglot-ensure)
+   (c++-ts-mode . eglot-ensure)
+   (java-mode . eglot-ensure)
    (java-ts-mode . eglot-ensure)
-   (simpc-mode . eglot-ensure)
    (rust-mode . eglot-ensure)
    (rust-ts-mode . eglot-ensure)
    (go-mode . eglot-ensure)
@@ -499,9 +289,6 @@
    (lua-mode . eglot-ensure)
    (lua-ts-mode . eglot-ensure))
   :config
-  (add-to-list 'eglot-server-programs
-               '((simpc-mode :language-id "c") . ("clangd")))
-
   (setq eglot-code-action-indications nil)
   (setq eglot-code-action-indicator nil)
 
@@ -538,13 +325,12 @@
   :bind
   (:map corfu-map
         ("C-y" . corfu-insert)
-        ("RET" . newline)
-        ("<return>" . newline)))
+        ("RET" . newline)))
 
 ;; Eldoc only in a separate buffer
 (setq eldoc-display-functions '(eldoc-display-in-buffer))
 
-;; Org-mode and Email
+;; Org-mode
 (use-package org
   :straight nil
   :hook
