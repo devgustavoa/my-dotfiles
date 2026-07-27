@@ -11,13 +11,11 @@
 The directories and files are organized to be managed with **GNU Stow**:
 
 ```bash
-.
-├── assets
-│   └── kinesis_layout.png
+├── .tmux.conf
+├── .zshrc
+├── alacritty
 ├── emacs
-├── fastfetch
 ├── i3
-├── README.md
 ├── tmux-sessionizer
 └── wpp.jpg
 ```

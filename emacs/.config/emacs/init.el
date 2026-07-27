@@ -67,7 +67,7 @@
 (set-face-attribute 'default nil
                     :font
                     "Iosevka"
-                    :height 150)
+                    :height 160)
 
 (use-package gruber-darker-theme
   :demand t
