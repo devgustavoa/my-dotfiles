@@ -69,10 +69,17 @@
                     "Iosevka"
                     :height 160)
 
-(use-package gruber-darker-theme
-  :demand t
-  :config
-  (load-theme 'gruber-darker t))
+;; (use-package gruber-darker-theme
+;;   :demand t
+;;   :config
+;;   (load-theme 'gruber-darker t))
+
+(load (expand-file-name
+       "themes/gruber-darker-custom.el"
+       user-emacs-directory)
+      nil
+      'nomessage)
+(enable-theme 'gruber-darker-custom)
 
 ;; Dired
 (use-package dired-x
@@ -227,7 +234,16 @@
               '(:documentOnTypeFormattingProvider))
   (local-set-key (kbd "RET") #'newline-and-indent))
 
+(defun gnix/c++-ts-mode-setup ()
+  (setq-local c++-ts-mode-indent-style 'k&r
+	      c++-ts-mode-indent-offset 4
+	      indent-tabs-mode nil
+	      eglot-ignored-server-capabilities
+	      '(:documentOnTypeFormattingProvider))
+  (local-set-key (kbd "RET") #'newline-and-indent))
+
 (add-hook 'c-ts-base-mode-hook #'gnix/c-ts-mode-setup)
+(add-hook 'c++-ts-mode-hook #'gnix/c++-ts-mode-setup)
 
 ;; Languages
 (use-package treesit
