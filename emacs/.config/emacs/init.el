@@ -448,24 +448,31 @@
           ("WONT-DO" . (:foreground "LimeGreen" :weight bold))))
 
   (setq org-tag-alist
-        '(;; Work type (choose one)
-          (:startgroup)
-          ("@bug"     . ?b)
-          ("@feature" . ?f)
-          ("@chore"   . ?c)
-          ("@research". ?r)
-          (:endgroup)
-          ;; Area
-          ("backend"  . ?k)
-          ("frontend" . ?F)
-          ("infra"    . ?i)
-          ("docs"     . ?d)
-          ("testing"  . ?t)
-          ;; Context
-          ("work"     . ?w)
-          ("studies"  . ?s)
-	  ("personal" . ?p)
-          )))
+      '(;; Area (choose one)
+        (:startgroup)
+        ("@embedded"    . ?e)
+        ("@programming" . ?p)
+        ("@electronics" . ?E)
+        ("@linux"       . ?l)
+        ("@math"        . ?m)
+        ("@physics"     . ?P)
+        ("@cs"          . ?s)
+        (:endgroup)
+
+        ;; Type
+        ("study"     . ?S)
+        ("read"      . ?r)
+        ("implement" . ?i)
+        ("bug"       . ?b)
+        ("feature"   . ?f)
+        ("research"  . ?R)
+        ("chore"     . ?c)
+        ("docs"      . ?d)
+        ("testing"   . ?t)
+
+        ;; Context
+        ("work"     . ?w)
+        ("personal" . ?x))))
 
 (defun gnix/open-notes ()
   "Open personal notes in Org overview."
