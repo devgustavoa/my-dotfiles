@@ -69,10 +69,10 @@
                     "Iosevka"
                     :height 160)
 
-(use-package gruber-darker-theme
+(use-package zenburn-theme
   :demand t
   :config
-  (load-theme 'gruber-darker t))
+  (load-theme 'zenburn t))
 
 ;; Dired
 (use-package dired-x
