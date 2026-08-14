@@ -66,7 +66,7 @@
 ;; Font & Theme
 (set-face-attribute 'default nil
                     :font
-                    "Iosevka"
+                    "Iosevka Term"
                     :height 160)
 
 (use-package zenburn-theme
