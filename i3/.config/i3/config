@@ -53,7 +53,7 @@ tiling_drag modifier titlebar
 bindsym $mod+Return exec --no-startup-id alacritty
 
 # browser
-bindsym $mod+b exec firefox-bin
+bindsym $mod+b exec firefox
 
 # kill focused window
 bindsym $mod+q kill

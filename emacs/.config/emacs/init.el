@@ -244,19 +244,19 @@
   :demand t
   :init
   (setq treesit-language-source-alist
-        '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
-          (c . ("https://github.com/tree-sitter/tree-sitter-c"))
-          (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
-          (elixir . ("https://github.com/elixir-lang/tree-sitter-elixir"))
-          (go . ("https://github.com/tree-sitter/tree-sitter-go"))
-          (gomod . ("https://github.com/camdencheek/tree-sitter-go-mod"))
-          (heex . ("https://github.com/phoenixframework/tree-sitter-heex"))
-          (java . ("https://github.com/tree-sitter/tree-sitter-java"))
-          (json . ("https://github.com/tree-sitter/tree-sitter-json"))
-          (lua . ("https://github.com/tree-sitter-grammars/tree-sitter-lua"))
-          (rust . ("https://github.com/tree-sitter/tree-sitter-rust"))
-          (toml . ("https://github.com/tree-sitter-grammars/tree-sitter-toml"))
-          (yaml . ("https://github.com/tree-sitter-grammars/tree-sitter-yaml"))))
+        '((bash . ("https://github.com/tree-sitter/tree-sitter-bash" "v0.23.3"))
+          (c       . ("https://github.com/tree-sitter/tree-sitter-c" "v0.23.6"))
+          (cpp     . ("https://github.com/tree-sitter/tree-sitter-cpp" "v0.23.4"))
+          (elixir  . ("https://github.com/elixir-lang/tree-sitter-elixir" "v0.3.0"))
+          (go      . ("https://github.com/tree-sitter/tree-sitter-go" "v0.23.4"))
+          (gomod   . ("https://github.com/camdencheek/tree-sitter-go-mod" "v1.0.2"))
+          (heex    . ("https://github.com/phoenixframework/tree-sitter-heex" "v0.8.0"))
+          (java    . ("https://github.com/tree-sitter/tree-sitter-java" "v0.23.5"))
+          (json    . ("https://github.com/tree-sitter/tree-sitter-json" "v0.24.8"))
+          (lua     . ("https://github.com/tree-sitter-grammars/tree-sitter-lua" "v0.2.0"))
+          (rust    . ("https://github.com/tree-sitter/tree-sitter-rust" "v0.23.3"))
+          (toml    . ("https://github.com/tree-sitter-grammars/tree-sitter-toml" "v0.7.0"))
+          (yaml    . ("https://github.com/ikatyang/tree-sitter-yaml"))))
 
   (dolist (entry '((bash sh-mode bash-ts-mode)
                    (c c-mode c-ts-mode)
@@ -497,3 +497,16 @@
   :after pdf-tools
   :hook
   (pdf-view-mode . pdf-view-restore-mode))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(flymake-inline-diagnostics nil nil nil "Customized with use-package eglot")
+ '(safe-local-variable-directories '("/home/gustavo/learn/esp32/projects/hello_world/")))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

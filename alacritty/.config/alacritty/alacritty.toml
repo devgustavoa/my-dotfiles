@@ -2,11 +2,8 @@
 import = ["~/.config/alacritty/themes/gruber_darker.toml"]
 
 [font]
-normal = { family = "Iosevka", style = "Regular" }
+normal = { family = "Iosevka Term", style = "Regular" }
 size = 16
 
 [window]
 opacity = 1
-
-[colors.primary]
-background = "#000000"
