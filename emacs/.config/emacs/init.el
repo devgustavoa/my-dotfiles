@@ -69,11 +69,6 @@
                     "Iosevka Term"
                     :height 160)
 
-;; (use-package kaolin-themes
-;;   :demand t
-;;   :config
-;;   (load-theme 'kaolin-temple t))
-
 (use-package gruber-darker-theme
   :demand t
   :config
