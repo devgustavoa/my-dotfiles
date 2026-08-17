@@ -69,10 +69,15 @@
                     "Iosevka Term"
                     :height 160)
 
-(use-package zenburn-theme
+;; (use-package kaolin-themes
+;;   :demand t
+;;   :config
+;;   (load-theme 'kaolin-temple t))
+
+(use-package gruber-darker-theme
   :demand t
   :config
-  (load-theme 'zenburn t))
+  (load-theme 'gruber-darker t))
 
 ;; Dired
 (use-package dired-x
