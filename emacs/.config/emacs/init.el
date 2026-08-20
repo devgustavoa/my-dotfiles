@@ -501,3 +501,5 @@
   :after pdf-tools
   :hook
   (pdf-view-mode . pdf-view-restore-mode))
+
+(setq enable-local-variables :all)

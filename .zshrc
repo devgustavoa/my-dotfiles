@@ -5,6 +5,7 @@ source $ZSH/oh-my-zsh.sh
 
 alias reboot="systemctl reboot"
 alias poweroff="systemctl poweroff"
+alias vim="nvim"
 
 export EDITOR="emacs"
 export PATH="$HOME/.cargo/bin:$HOME/go/bin:$PATH"
@@ -16,3 +17,7 @@ unalias gf 2>/dev/null
 
 export IDF_PATH="$HOME/esp/esp-idf"
 alias get_idf='source "$HOME/esp/esp-idf/export.sh"'
+
+# tabtab source for electron-forge package
+# uninstall by removing these lines or running `tabtab uninstall electron-forge`
+[[ -f /home/gustavo/work/App-Config-IP/electron/node_modules/tabtab/.completions/electron-forge.zsh ]] && . /home/gustavo/work/App-Config-IP/electron/node_modules/tabtab/.completions/electron-forge.zsh
