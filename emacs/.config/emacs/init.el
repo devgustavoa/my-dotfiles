@@ -327,10 +327,14 @@
   :init
   (global-corfu-mode)
   :custom
-  (corfu-auto nil)
+  (corfu-auto t)
   (corfu-cycle t)
   (corfu-preview-current nil)
-  (corfu-on-exact-match nil))
+  (corfu-on-exact-match nil)
+  :bind
+  (:map corfu-map
+	("C-y" . corfu-insert)
+	("<return>" . newline)))
 
 ;; Eldoc only in a separate buffer
 (setq eldoc-display-functions '(eldoc-display-in-buffer))
@@ -497,16 +501,3 @@
   :after pdf-tools
   :hook
   (pdf-view-mode . pdf-view-restore-mode))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(flymake-inline-diagnostics nil nil nil "Customized with use-package eglot")
- '(safe-local-variable-directories '("/home/gustavo/learn/esp32/projects/hello_world/")))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
