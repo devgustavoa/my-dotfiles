@@ -238,6 +238,11 @@
 (add-hook 'c-ts-base-mode-hook #'gnix/c-ts-mode-setup)
 (add-hook 'c++-ts-mode-hook #'gnix/c++-ts-mode-setup)
 
+;; Align region
+(add-hook 'prog-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "C-c <tab>") #'align)))
+
 ;; Languages
 (use-package treesit
   :straight nil
