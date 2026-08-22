@@ -47,28 +47,4 @@ return {
       },
     },
   },
-  {
-    "SmiteshP/nvim-navic",
-    event = "LspAttach",
-    opts = {
-      highlight = true,
-      separator = " > ",
-      depth_limit = 5,
-      lsp = {
-        auto_attach = true,
-        preference = {
-          "typescript-tools",
-          "ts_ls",
-          "angularls",
-          "vue_ls",
-          "html",
-          "cssls",
-          "lua_ls",
-          "gopls",
-          "rust_analyzer",
-          "clangd",
-        },
-      },
-    },
-  },
 }
