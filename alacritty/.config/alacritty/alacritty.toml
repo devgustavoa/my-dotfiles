@@ -3,7 +3,7 @@ import = ["~/.config/alacritty/themes/gruber_darker.toml"]
 
 [font]
 normal = { family = "IosevkaTermSlab Nerd Font Mono", style = "Regular" }
-size = 12
+size = 15
 
 [window]
 opacity = 1
