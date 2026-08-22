@@ -69,10 +69,10 @@
                     "Iosevka Term"
                     :height 160)
 
-(use-package gruber-darker-theme
+(use-package zenburn-theme
   :demand t
   :config
-  (load-theme 'gruber-darker t))
+  (load-theme 'zenburn t))
 
 ;; Dired
 (use-package dired-x
@@ -332,14 +332,10 @@
   :init
   (global-corfu-mode)
   :custom
-  (corfu-auto t)
+  (corfu-auto nil)
   (corfu-cycle t)
   (corfu-preview-current nil)
-  (corfu-on-exact-match nil)
-  :bind
-  (:map corfu-map
-	("C-y" . corfu-insert)
-	("<return>" . newline)))
+  (corfu-on-exact-match nil))
 
 ;; Eldoc only in a separate buffer
 (setq eldoc-display-functions '(eldoc-display-in-buffer))
