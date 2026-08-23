@@ -66,8 +66,8 @@
 ;; Font & Theme
 (set-face-attribute 'default nil
                     :font
-                    "Iosevka Term"
-                    :height 160)
+                    "IosevkaTermSlab Nerd Font"
+                    :height 135)
 
 (use-package doom-themes
   :demand t
