@@ -65,6 +65,7 @@ bindsym $mod+d exec rofi -show drun
 
 # launch emacs
 bindsym $mod+e exec emacs
+bindsym $mod+v exec code
 
 # change focus
 bindsym $mod+h focus left

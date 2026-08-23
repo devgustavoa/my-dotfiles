@@ -69,10 +69,10 @@
                     "Iosevka Term"
                     :height 160)
 
-(use-package zenburn-theme
+(use-package ayu-theme
   :demand t
   :config
-  (load-theme 'zenburn t))
+  (load-theme 'ayu-dark t))
 
 ;; Dired
 (use-package dired-x
