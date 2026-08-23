@@ -69,10 +69,10 @@
                     "Iosevka Term"
                     :height 160)
 
-(use-package ayu-theme
+(use-package doom-themes
   :demand t
   :config
-  (load-theme 'ayu-dark t))
+  (load-theme 'doom-ayu-dark t))
 
 ;; Dired
 (use-package dired-x
