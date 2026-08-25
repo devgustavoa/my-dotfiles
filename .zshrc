@@ -15,9 +15,4 @@ command -v direnv >/dev/null 2>&1 && eval "$(direnv hook bash)"
 
 unalias gf 2>/dev/null
 
-export IDF_PATH="$HOME/esp/esp-idf"
-alias get_idf='source "$HOME/esp/esp-idf/export.sh"'
-
-# tabtab source for electron-forge package
-# uninstall by removing these lines or running `tabtab uninstall electron-forge`
-[[ -f /home/gustavo/work/App-Config-IP/electron/node_modules/tabtab/.completions/electron-forge.zsh ]] && . /home/gustavo/work/App-Config-IP/electron/node_modules/tabtab/.completions/electron-forge.zsh
+alias get_idf='. $HOME/esp/esp-idf/export.sh'

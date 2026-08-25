@@ -69,10 +69,10 @@
                     "IosevkaTermSlab Nerd Font"
                     :height 135)
 
-(use-package doom-themes
+(use-package gruber-darker-theme
   :demand t
   :config
-  (load-theme 'doom-ayu-dark t))
+  (load-theme 'gruber-darker t))
 
 ;; Dired
 (use-package dired-x
@@ -332,10 +332,14 @@
   :init
   (global-corfu-mode)
   :custom
-  (corfu-auto nil)
+  (corfu-auto t)
   (corfu-cycle t)
   (corfu-preview-current nil)
-  (corfu-on-exact-match nil))
+  (corfu-on-exact-match nil)
+  :bind
+  (:map corfu-map
+	("C-y" . corfu-insert)
+	("<return>" . newline)))
 
 ;; Eldoc only in a separate buffer
 (setq eldoc-display-functions '(eldoc-display-in-buffer))
