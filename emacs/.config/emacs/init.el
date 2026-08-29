@@ -1,4 +1,4 @@
-; init.el --- Personal Emacs Configuration -*- lexical-binding: t; -*-
+;;; init.el --- Personal Emacs Configuration -*- lexical-binding: t; -*-
 
 ;; Author: Gustavo Arantes (gnix)
 ;; Created: July 2026
@@ -74,10 +74,15 @@
 ;;   :config
 ;;   (load-theme 'gruber-darker t))
 
-(use-package monokai-pro-theme
-  :demand t
-  :config
-  (load-theme 'monokai-pro-spectrum t))
+;; (use-package monokai-pro-theme
+;;   :demand t
+;;   :config
+;;   (load-theme 'monokai-pro-spectrum t))
+
+(add-to-list 'custom-theme-load-path
+	     "~/.config/emacs/themes/")
+
+(load-theme 'davinci t)
 
 ;; Dired
 (use-package dired-x
