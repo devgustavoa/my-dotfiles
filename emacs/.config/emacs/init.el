@@ -69,10 +69,15 @@
                     "IosevkaTermSlab Nerd Font"
                     :height 135)
 
-(use-package gruber-darker-theme
+;; (use-package gruber-darker-theme
+;;   :demand t
+;;   :config
+;;   (load-theme 'gruber-darker t))
+
+(use-package monokai-pro-theme
   :demand t
   :config
-  (load-theme 'gruber-darker t))
+  (load-theme 'monokai-pro-spectrum t))
 
 ;; Dired
 (use-package dired-x
