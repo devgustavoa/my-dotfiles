@@ -74,15 +74,19 @@
 ;;   :config
 ;;   (load-theme 'gruber-darker t))
 
-;; (use-package monokai-pro-theme
-;;   :demand t
-;;   :config
-;;   (load-theme 'monokai-pro-spectrum t))
+(use-package monokai-pro-theme
+  :demand t
+  :config
+  (load-theme 'monokai-pro-spectrum t))
 
-(add-to-list 'custom-theme-load-path
-	     "~/.config/emacs/themes/")
-
-(load-theme 'davinci t)
+;; This is a port of the "Vitruvian Man Dark" colorscheme
+;; from the VS Code original "Davinci" themes.
+;; It is not, however, a perfect port yet. Hence, it is not
+;; currently being used nor have been made available on my
+;; GitHub profile. I'll do it when I have the time. :3
+;; (add-to-list 'custom-theme-load-path
+;; 	     "~/.config/emacs/themes/")
+;; (load-theme 'davinci t)
 
 ;; Dired
 (use-package dired-x
