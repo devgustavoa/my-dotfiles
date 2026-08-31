@@ -74,10 +74,10 @@
 ;;   :config
 ;;   (load-theme 'gruber-darker t))
 
-(use-package monokai-pro-theme
+(use-package doom-themes
   :demand t
   :config
-  (load-theme 'monokai-pro-spectrum t))
+  (load-theme 'doom-monokai-pro t))
 
 ;; This is a port of the "Vitruvian Man Dark" colorscheme
 ;; from the VS Code original "Davinci" themes.
